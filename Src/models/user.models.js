@@ -31,11 +31,6 @@ const userScheme = new Schema(
                 ref: "Post"
             }
         ],
-        accessToken: {
-            type: String,
-            default: "",
-            unique: true,
-        }
     }, {timestamps: true}
 )
 
