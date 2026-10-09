@@ -2,7 +2,6 @@ import { User } from "../models/user.models.js";
 import { v4 as uuidv4 } from 'uuid';
 
 const registerUser = async (req, res) => {
-    console.log(req.body.username, req.body.password);
     
     if (!req.body.username || !req.body.password) {
         return res.status(400).json({
@@ -16,14 +15,12 @@ const registerUser = async (req, res) => {
             message: "Username already exists"
         })
     }
-    console.log("step 1 complete");
     
     await User.create({
         username: req.body.username,
         password: req.body.password,
     })
     .then((User) => {
-        console.log("step 2 complete");
         res.status(200).json({
             message: "User registered successfully",
             user: User.id,
