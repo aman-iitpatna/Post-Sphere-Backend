@@ -33,6 +33,8 @@ app.use(cors(
 import userRouter from './Src/routes/user.routes.js'
 import postRouter from './Src/routes/posts.routes.js'
 
-
+app.get('/', (req, res) => {
+    res.send('Welcome to the Post Sphere API');
+})
 app.use('/user', userRouter);
 app.use('/post', postRouter);
