@@ -2,6 +2,7 @@ import { User } from "../models/user.models.js";
 import { v4 as uuidv4 } from 'uuid';
 
 const registerUser = async (req, res) => {
+    const { username, password } = req.body;
     
     if (!req.body.username || !req.body.password) {
         return res.status(400).json({
@@ -9,9 +10,9 @@ const registerUser = async (req, res) => {
         })
     }
 
-    const existingUser = await User.findOne({ username: req.body.username });
+    const existingUser = await User.findOne({ username });
     if (existingUser) {
-        return res.status(300).json({
+        return res.status(409).json({
             message: "Username already exists"
         })
     }
@@ -21,7 +22,7 @@ const registerUser = async (req, res) => {
         password: req.body.password,
     })
     .then((User) => {
-        res.status(200).json({
+        res.status(202).json({
             message: "User registered successfully",
             user: User.id,
         })
