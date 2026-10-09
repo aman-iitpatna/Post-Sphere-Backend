@@ -1,1 +1,1 @@
-export const DB_NAME = "postsphere";
+export const DB_NAME = "postsphere2";
