@@ -2,43 +2,36 @@ import { User } from "../models/user.models.js";
 import { v4 as uuidv4 } from 'uuid';
 
 const registerUser = async (req, res) => {
+    const { username, password } = req.body;
+    
+    if (!req.body.username || !req.body.password) {
+        return res.status(400).json({
+            message: "Username and password are required"
+        })
+    }
+
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+        return res.status(409).json({
+            message: "Username already exists"
+        })
+    }
+
     try {
-        const { username, password } = req.body;
-
-        if (!username || !password) {
-            return res.status(400).json({
-                message: "Username and password are required"
-            });
-        }
-
-        const existingUser = await User.findOne({ username });
-        if (existingUser) {
-            return res.status(409).json({ 
-                message: "Username already exists"
-            });
-        }
-
-        const newUser = await User.create({
-            username,
-            password 
-        });
-
-        return res.status(201).json({
+        const user = await User.create({
+            username: req.body.username,
+            password: password,
+        })
+        res.status(202).json({
             message: "User registered successfully",
-            userId: newUser._id
-        });
+            user: user.id,
+        })
 
     } catch (error) {
-        if (error.code === 11000) {
-            return res.status(409).json({
-                message: "Username already exists"
-            });
-        }
-
-        return res.status(500).json({
+        res.status(500).json({
             message: "Error registering user",
-            error: error.message
-        });
+            error: error
+        })
     }
 }
 
