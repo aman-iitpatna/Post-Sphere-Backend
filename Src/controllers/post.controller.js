@@ -24,7 +24,6 @@ const createPost = async(req, res) => {
         if(!req.body.title || !user) {
             return res.status(404).json({ message: 'Invalid UserId' });
         }
-        console.log("req.file?.path", req.file?.path);
 
         const postImageURL = req.file?.path ? await uploadOnCloudinary(req.file.path): null;
 
